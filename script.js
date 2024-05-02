@@ -1,10 +1,14 @@
-const grind = document.getElementById("grid")
+const display = document.getElementById("grid")
 
-for (let i = 0; i < 3; i++) {
+const grid = new Array(3)
+for (let i = 0; i < 3; i++) grid[i] = new Array(3)
+
+for (let y = 0; y < 3; y++) {
     const tr = document.createElement("tr")
-    for (let j = 0; j < 3; j++) {
+    for (let x = 0; x < 3; x++) {
         const td = document.createElement("td")
         tr.appendChild(td)
+        grid[y][x] = td
     }
-    grind.appendChild(tr)
+    display.appendChild(tr)
 }
