@@ -49,35 +49,48 @@ function randInteger(min = 0, max = 10) {
 
 function computerPlay() {
     const index = randInteger(0, avalableCells.length - 1)
-    avalableCells[index].click()
+    // avalableCells[index].click()
+}
+
+function prioritise2Points() {
+    for (let y = 0; y < 3; y++) {
+        let points = 0
+        for (let x = 0; x < 3; x++) {
+            points += grid[y][x].innerText === symbol ? 1 : 0
+        }
+    }
 }
 
 function checkForWin() {
     let win = false
-    for (let line = 0; line < 3; line++) if (checkLine(line)) return true
-    for (let column = 0; column < 3; column++) if (checkColumn(column)) return true
-    if (checkDiags()) return true
+    for (let line = 0; line < 3; line++) if (checkLine(line) === 3) return true
+    for (let column = 0; column < 3; column++) if (checkColumn(column) === 3) return true
+    for (let x = 0; x <= 2; x += 2) if (checkDiags(x) === 3) return true
     return win
 }
 
 function checkLine(y) {
     let points = 0
     for (let x = 0; x < 3; x++) points += grid[y][x].innerText === symbol ? 1 : 0
-    return points === 3
+    return points
 }
 
 function checkColumn(x) {
     let points = 0
     for (let y = 0; y < 3; y++) points += grid[y][x].innerText === symbol ? 1 : 0
-    return points === 3
+    return points
 }
 
-function checkDiags() {
-    let points = 0
-    for (let i = 0; i < 3; i++) points += grid[i][i].innerText === symbol ? 1 : 0
-    if (points === 3) return true
-
-    points = 0
-    for (let j = 0; j >= 0; j--) points += grid[j][j].innerText === symbol ? 1 : 0
-    return points === 3
+function checkDiags(start) {
+    let points = 0,
+        y = -1,
+        x = 3
+    if (start === 0) for (let i = 0; i < 3; i++) points += grid[i][i].innerText === symbol ? 1 : 0
+    if (points === 3) return 3
+    else points = 0
+    if (start === 2)
+        for (let j = 0; j < 3; j++) {
+            points += grid[(y += 1)][(x -= 1)].innerText === symbol ? 1 : 0
+        }
+    return points
 }
