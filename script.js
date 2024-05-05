@@ -49,7 +49,7 @@ function randInteger(min = 0, max = 10) {
 
 function computerPlay() {
     const index = randInteger(0, avalableCells.length - 1)
-    // avalableCells[index].click()
+    avalableCells[index].click()
 }
 
 function prioritise2Points() {
