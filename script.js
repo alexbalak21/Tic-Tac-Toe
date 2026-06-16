@@ -107,62 +107,146 @@ function computerPlay() {
         return
     }
 
-    console.log("AI — Turn >= 2, prioritising 2-point lines")
-    prioritise2Points(ai)
+    console.log("AI — Turn >= 2, checking WIN first")
+    if (tryWin(ai)) return
+
+    console.log("AI — No winning move, checking BLOCK")
+    if (tryBlock("X")) return
+
+    console.log("AI — No block possible, random move")
+    randomMove()
 }
 
-function prioritise2Points(ai) {
-    console.log("AI — prioritise2Points() START, ai =", ai)
+//
+//  WIN LOGIC (with empty check)
+//
+function tryWin(ai) {
+    console.log("AI — tryWin() START, ai =", ai)
 
-    if (turn < 3) {
-        console.log("AI — Turn < 3, random move")
-        randomMove()
-        return
-    }
-
-    console.log("AI — Checking rows")
+    // ROWS
     for (let y = 0; y < 3; y++) {
         const pts = checkLine(y, ai)
         console.log("AI — Row", y, "points =", pts)
-        if (pts === 2) {
-            console.log("AI — Found 2 in row", y)
+
+        if (pts === 2 && rowHasEmpty(y)) {
+            console.log("AI — WIN in row", y)
             fillLine(y)
-            return
+            return true
         }
     }
 
-    console.log("AI — Checking columns")
+    // COLUMNS
     for (let x = 0; x < 3; x++) {
         const pts = checkColumn(x, ai)
         console.log("AI — Column", x, "points =", pts)
-        if (pts === 2) {
-            console.log("AI — Found 2 in column", x)
+
+        if (pts === 2 && columnHasEmpty(x)) {
+            console.log("AI — WIN in column", x)
             fillColumn(x)
-            return
+            return true
         }
     }
 
-    console.log("AI — Checking diagonals")
+    // DIAGONALS
     let pts = checkDiags(0, ai)
     console.log("AI — Diagonal 0 points =", pts)
-    if (pts === 2) {
-        console.log("AI — Found 2 in diag 0")
+    if (pts === 2 && diagHasEmpty(0)) {
+        console.log("AI — WIN diag 0")
         fillDiag(0)
-        return
+        return true
     }
 
     pts = checkDiags(2, ai)
     console.log("AI — Diagonal 2 points =", pts)
-    if (pts === 2) {
-        console.log("AI — Found 2 in diag 2")
+    if (pts === 2 && diagHasEmpty(2)) {
+        console.log("AI — WIN diag 2")
         fillDiag(2)
-        return
+        return true
     }
 
-    console.log("AI — No 2-point line found, random move")
-    randomMove()
+    return false
 }
 
+//
+//  BLOCK LOGIC (with empty check)
+//
+function tryBlock(playerSymbol) {
+    console.log("AI — tryBlock() START, player =", playerSymbol)
+
+    // ROWS
+    for (let y = 0; y < 3; y++) {
+        const pts = checkLine(y, playerSymbol)
+        console.log("AI — BLOCK Row", y, "points =", pts)
+
+        if (pts === 2 && rowHasEmpty(y)) {
+            console.log("AI — BLOCK row", y)
+            fillLine(y)
+            return true
+        }
+    }
+
+    // COLUMNS
+    for (let x = 0; x < 3; x++) {
+        const pts = checkColumn(x, playerSymbol)
+        console.log("AI — BLOCK Column", x, "points =", pts)
+
+        if (pts === 2 && columnHasEmpty(x)) {
+            console.log("AI — BLOCK column", x)
+            fillColumn(x)
+            return true
+        }
+    }
+
+    // DIAGONALS
+    let pts = checkDiags(0, playerSymbol)
+    console.log("AI — BLOCK Diag 0 points =", pts)
+    if (pts === 2 && diagHasEmpty(0)) {
+        console.log("AI — BLOCK diag 0")
+        fillDiag(0)
+        return true
+    }
+
+    pts = checkDiags(2, playerSymbol)
+    console.log("AI — BLOCK Diag 2 points =", pts)
+    if (pts === 2 && diagHasEmpty(2)) {
+        console.log("AI — BLOCK diag 2")
+        fillDiag(2)
+        return true
+    }
+
+    console.log("AI — No block needed")
+    return false
+}
+
+//
+//  EMPTY CHECK HELPERS
+//
+function rowHasEmpty(y) {
+    for (let x = 0; x < 3; x++)
+        if (grid[y][x].innerText === "") return true
+    return false
+}
+
+function columnHasEmpty(x) {
+    for (let y = 0; y < 3; y++)
+        if (grid[y][x].innerText === "") return true
+    return false
+}
+
+function diagHasEmpty(start) {
+    if (start === 0) {
+        for (let i = 0; i < 3; i++)
+            if (grid[i][i].innerText === "") return true
+    } else {
+        for (let i = 0; i < 3; i++)
+            if (grid[i][2 - i].innerText === "") return true
+    }
+    return false
+}
+
+//
+//  FILL FUNCTIONS
+//
 function fillLine(y) {
     console.log("AI — fillLine", y)
     for (let x = 0; x < 3; x++) {
@@ -210,6 +294,9 @@ function fillDiag(start) {
     }
 }
 
+//
+//  FALLBACK
+//
 function randomMove() {
     console.log("AI — randomMove() called")
     if (avalableCells.length === 0) {
@@ -241,6 +328,9 @@ function playCorner() {
     }
 }
 
+//
+//  CHECK FUNCTIONS
+//
 function checkForWin(playerSymbol) {
     console.log("CHECK WIN — Checking for symbol:", playerSymbol)
 
