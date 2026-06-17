@@ -7,7 +7,6 @@ export default function App() {
         <h1 className="text-4xl font-bold">
           Tic Tac Toe Game
         </h1>
-
         <Board />
       </div>
     </div>
