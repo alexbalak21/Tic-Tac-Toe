@@ -26,14 +26,14 @@
         {value === "X" && (
           <XIcon
             style={{ width: ICON_SIZE, height: ICON_SIZE }}
-            className="text-white"
+            className="text-teal-500"
           />
         )}
 
         {value === "O" && (
           <OIcon
             style={{ width: ICON_SIZE, height: ICON_SIZE }}
-            className="text-white"
+            className="text-yellow-500"
           />
         )}
       </button>
