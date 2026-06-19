@@ -1,6 +1,6 @@
 import { ReactComponent as XIcon } from "../assets/X.svg";
 import { ReactComponent as OIcon } from "../assets/O.svg";
-
+import { ICON_SIZE, SQUARE_SIZE } from "../config/sizes";
 
 type SquareProps = {
   value: "X" | "O" | null;
@@ -11,18 +11,31 @@ export default function Square({ value, onClick }: SquareProps) {
   return (
     <button
       onClick={onClick}
+      style={{
+        width: SQUARE_SIZE,
+        height: SQUARE_SIZE,
+      }}
       className="
-        w-20 h-20 
         bg-gray-800 
         rounded-lg 
         flex items-center justify-center 
-        text-3xl font-bold 
         hover:bg-gray-700 
         transition
       "
     >
-      {value === "X" && <XIcon className="w-14 h-14 text-white" />}
-      {value === "O" && <OIcon className="w-14 h-14 text-white" />}
+      {value === "X" && (
+        <XIcon
+          style={{ width: ICON_SIZE, height: ICON_SIZE }}
+          className="text-white"
+        />
+      )}
+
+      {value === "O" && (
+        <OIcon
+          style={{ width: ICON_SIZE, height: ICON_SIZE }}
+          className="text-white"
+        />
+      )}
     </button>
   );
 }

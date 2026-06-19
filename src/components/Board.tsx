@@ -21,7 +21,7 @@ export default function Board() {
   return (
     <div className="space-y-4">
       {/* Board */}
-      <div className="grid grid-cols-3 gap-3 w-64 mx-auto">
+      <div className="grid grid-cols-3 gap-2 mx-auto">
         {squares.map((value: SquareValue, index: number) => (
           <Square
             key={index}
