@@ -1,3 +1,7 @@
+import { ReactComponent as XIcon } from "../assets/X.svg";
+import { ReactComponent as OIcon } from "../assets/O.svg";
+
+
 type SquareProps = {
   value: "X" | "O" | null;
   onClick: () => void;
@@ -17,7 +21,8 @@ export default function Square({ value, onClick }: SquareProps) {
         transition
       "
     >
-      {value}
+      {value === "X" && <XIcon className="w-14 h-14 text-white" />}
+      {value === "O" && <OIcon className="w-14 h-14 text-white" />}
     </button>
   );
 }
