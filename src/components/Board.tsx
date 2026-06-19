@@ -6,23 +6,29 @@ type BoardState = SquareValue[];
 
 export default function Board() {
   const emptyBoard: BoardState = Array(9).fill(null);
+
   const [squares, setSquares] = useState<BoardState>(emptyBoard);
+  const [currentPlayer, setCurrentPlayer] = useState<"X" | "O">("X");
 
   const handleClick = (index: number) => {
-    if (squares[index]) return; // prevent overwriting
+    if (squares[index]) return;
 
     const newSquares = [...squares];
-    newSquares[index] = "X"; // later you can alternate players
+    newSquares[index] = currentPlayer;
     setSquares(newSquares);
+
+    setCurrentPlayer(currentPlayer === "X" ? "O" : "X");
   };
 
-  const resetBoard = () => setSquares(emptyBoard);
+  const resetBoard = () => {
+    setSquares(emptyBoard);
+    setCurrentPlayer("X");
+  };
 
   return (
     <div className="space-y-4">
-      {/* Board */}
       <div className="grid grid-cols-3 gap-2 mx-auto">
-        {squares.map((value: SquareValue, index: number) => (
+        {squares.map((value, index) => (
           <Square
             key={index}
             value={value}
@@ -31,7 +37,10 @@ export default function Board() {
         ))}
       </div>
 
-      {/* Reset Button */}
+      <p className="text-xl font-semibold">
+        Current Player: {currentPlayer}
+      </p>
+
       <button
         onClick={resetBoard}
         className="px-6 py-2 bg-green-500 hover:bg-green-600 rounded-lg text-black font-semibold transition"
