@@ -1,9 +1,10 @@
   import { ReactComponent as XIcon } from "../assets/X.svg";
   import { ReactComponent as OIcon } from "../assets/O.svg";
   import { ICON_SIZE, SQUARE_SIZE } from "../config/sizes";
+  import type { SquareValue } from "../types/board";
 
   type SquareProps = {
-    value: "X" | "O" | null;
+    value: SquareValue;
     onClick: () => void;
   };
 
